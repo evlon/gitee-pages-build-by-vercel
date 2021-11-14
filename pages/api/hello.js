@@ -4,9 +4,9 @@ import buildPage from 'gitee-pages-build';
 export default async function handler(req, res) {
   //let resp = await fetch("https://www.baidu.com");
   //let html = await resp.text();
-  let giteeToken = req.headers["X-Gitee-Token"];
-  let giteeTimestamp = req.headers["X-Gitee-Timestamp"];
-  let giteeEvent = req.headers["X-Gitee-Event"];
+  let giteeToken = req.headers["x-gitee-token"];
+  let giteeTimestamp = req.headers["x-gitee-timestamp"];
+  let giteeEvent = req.headers["x-gitee-event"];
 
 
   if (giteeToken != process.env.X_GITEE_TOKEN) {
