@@ -4,21 +4,25 @@ import buildPage from 'gitee-pages-build';
 export default async function handler(req, res) {
   //let resp = await fetch("https://www.baidu.com");
   //let html = await resp.text();
-   let giteeToken = req.headers["X-Gitee-Token"];
-   let giteeTimestamp = req.headers["X-Gitee-Timestamp"];
-   let giteeEvent = req.headers["X-Gitee-Event"];
+  let giteeToken = req.headers["X-Gitee-Token"];
+  let giteeTimestamp = req.headers["X-Gitee-Timestamp"];
+  let giteeEvent = req.headers["X-Gitee-Event"];
 
 
-  
-   
- 
-  if(process.env.GITEE_USERNAME){
-    //await buildPage();
-
-    res.status(200).json({ msg: 'build success.'})
+  if (giteeToken != process.env.X_GITEE_TOKEN) {
+    res.status(403).json({ msg: 'access not allowd.' })
+    return;
   }
-  else{
-    res.status(200).json({msg:`设置环境变量    
+
+
+  if (process.env.GITEE_USERNAME && process.env.GITEE_PASSWORD && process.env.GITEE_REPO) {
+    let buildResult = await buildPage();
+
+    res.status(200).json({ msg: 'build success.' })
+  }
+  else {
+    res.status(200).json({
+      msg: `设置环境变量    
     GITEE_USERNAME=your_name
     GITEE_PASSWORD=your_password
     GITEE_REPO=your_repo
@@ -29,6 +33,6 @@ export default async function handler(req, res) {
     GITEE_GIST_ID=gist_id
     `})
   }
- 
-  
+
+
 }
