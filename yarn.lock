@@ -1505,10 +1505,10 @@ gitee-client@^0.2.0:
   resolved "https://registry.npmmirror.com/gitee-client/download/gitee-client-0.2.0.tgz#88aa04a419e949c96d6d429def679e5c4d46535a"
   integrity sha1-iKoEpBnpScltbUKd72eeXE1GU1o=
 
-gitee-pages-build@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmmirror.com/gitee-pages-build/download/gitee-pages-build-0.0.1.tgz?cache=0&sync_timestamp=1636876893648&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fgitee-pages-build%2Fdownload%2Fgitee-pages-build-0.0.1.tgz#4cae7af779a121bb4185522e4b91937c1be73b95"
-  integrity sha512-XASOZWISkApZAA6L3S1cFZirgvF28T/uVDmcCcLeBEdqk1yEfqDKrwxv44TiUqn/cFheIZBVr0PubDaOWcOBlw==
+gitee-pages-build@^0.0.*:
+  version "0.0.2"
+  resolved "https://registry.npmmirror.com/gitee-pages-build/download/gitee-pages-build-0.0.2.tgz#c5f70b1db2dfa3c9a2f8afb087793189c5018c75"
+  integrity sha512-2TEUAF5wubQgOZawznCx/ZplIKqYw03Cao2o9YH5gRO8AdqczpnDmvpcSm7tabOMAV0g201X8ilXWGApqSzChw==
   dependencies:
     cheerio "^1.0.0-rc.10"
     dotenv "^10.0.0"
