@@ -1,10 +1,8 @@
-//const fetch = require('node-fetch');
 import buildPage from 'gitee-pages-build';
-// import { NextRequest } from '_next@12.0.1@next/dist/server/web/spec-extension/request';
+
 
 export default async function handler(req, res) {
-  //let resp = await fetch("https://www.baidu.com");
-  //let html = await resp.text();
+
   let giteeToken = req.headers["x-gitee-token"];
   let giteeTimestamp = req.headers["x-gitee-timestamp"];
   let giteeEvent = req.headers["x-gitee-event"];
@@ -14,11 +12,7 @@ export default async function handler(req, res) {
     res.status(403).json({ msg: 'access not allowd.' })
     return;
   }
-//   let r = new NextRequest();
-// r.json
-  let reqJson = JSON.parse(req.body);
-
-  let repo = reqJson.repository.path;
+  let repo = req.body.repository.path;
   //更新环境变量
   process.env.GITEE_REPO = repo;
 
