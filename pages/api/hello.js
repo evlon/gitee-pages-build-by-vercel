@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 //   let r = new NextRequest();
 // r.json
-  let reqJson = await req.json();
+  let reqJson = JSON.parse(req.body);
 
   let repo = reqJson.repository.path;
   //更新环境变量
