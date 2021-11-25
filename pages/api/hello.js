@@ -17,6 +17,7 @@ export default async function handler(req, res) {
   process.env.GITEE_REPO = repo;
 
   if (process.env.GITEE_USERNAME && process.env.GITEE_PASSWORD && process.env.GITEE_REPO) {
+    let loginResult = await buildPage.gitee_login_with_obj_cookie();
     let buildResult = await buildPage.pagebuild_with_obj_cookie();
 
     res.status(200).json({ msg: 'build success.' })
