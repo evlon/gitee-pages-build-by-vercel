@@ -78,7 +78,7 @@ function addAction(step, fn_argState) {
 
 async function doAction(req) {
   let currentStep = parseInt(req.query.step || '1');
-  let state = req.query.state;
+  let state = JSON.parse(req.query.state || '{}');
   //add your code here...
   console.log('your code here...', new Date(), state)
   //await sleep(5000);
