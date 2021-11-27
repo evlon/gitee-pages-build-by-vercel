@@ -53,7 +53,7 @@ export default async function handler(req, res) {
 
   console.log(req.url);
   await doAction(req); 
-  res.status(200).json({step: currentStep, code:0, msg:"ok"}) 
+  res.status(200).json({ code:0, msg:"ok"}) 
 }
 
 function actions(step){
