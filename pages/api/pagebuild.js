@@ -2,6 +2,8 @@ import buildPage from 'gitee-pages-build';
 import fetch from 'node-fetch'
 import sleep from 'sleep-anywhere'
 import URLSearchParams from 'url-search-params'
+let GiteePage = buildPage.GiteePage;
+let gist = buildPage.giteeGistSync
 let actionsmap = {};
 
 export default async function handler(req, res) {
@@ -24,15 +26,35 @@ export default async function handler(req, res) {
       let giteeEvent = req.headers["x-gitee-event"];
 
       addAction(1, async state => {
-        return { args: { giteeTimestamp, giteeEvent, repo, branch }, stacks: [{ msg: 'init api', time: new Date() }] };
+        let jsonObject = {};
+        // sync from gitee gist
+        const syncResult = await gist.sync_obj(process.env.GITEE_GIST_TOKEN, process.env.GITEE_GIST_ID, "json_cookie.mem", jsonObject)
+        console.log('sync cookie to local ' + syncResult)
+
+        return { args: { cookie: jsonObject, repo, branch }, stacjsonObjectks: [{ msg: 'init api', time: new Date() }] };
       })
     }
 
 
     addAction(2, async state => {
+
       //更新环境变量
       process.env.GITEE_REPO = state.args.repo;
-      let loginResult = await buildPage.gitee_login_with_obj_cookie();
+      GiteePage.delayFetch = 50;
+
+      let gitee = new GiteePage(process.env.GITEE_USERNAME,
+        process.env.GITEE_PASSWORD,
+        process.env.GITEE_REPO,
+        process.env.GITEE_BRANCH,
+        process.env.GITEE_DIRECTORY,
+        process.env.GITEE_HTTPS)
+
+      // 设置COOKIE
+      await gitee.setCookieStoreJsonObject(state.args.cookie)
+
+      const loginResult = await gitee.login()
+      console.log('login ' + syncResult)
+
       state.stacks.push({ msg: 'gitee_login_with_obj_cookie', time: new Date(), result: loginResult });
       return state;
     })
@@ -40,13 +62,31 @@ export default async function handler(req, res) {
     addAction(3, async state => {
       //更新环境变量
       process.env.GITEE_REPO = state.args.repo;
-      let buildResult = await buildPage.pagebuild_with_obj_cookie();
+      GiteePage.delayFetch = 50;
+
+      let gitee = new GiteePage(process.env.GITEE_USERNAME,
+        process.env.GITEE_PASSWORD,
+        process.env.GITEE_REPO,
+        process.env.GITEE_BRANCH,
+        process.env.GITEE_DIRECTORY,
+        process.env.GITEE_HTTPS)
+
+      // 设置COOKIE
+      await gitee.setCookieStoreJsonObject(state.args.cookie)
+
+      let buildResult = await gitee.pageBuild();
       state.stacks.push({ msg: 'pagebuild_with_obj_cookie', time: new Date(), result: buildResult });
       console.log('build success.')
       return state;
     })
 
-
+    addAction(4, async state => {
+      let jsonObject = state.args.cookie;
+      const saveResult = await gist.save_obj(process.env.GITEE_GIST_TOKEN, jsonObject, process.env.GITEE_GIST_ID, "json_cookie.mem")
+      console.log('sync cookie to gitee gist  ' + saveResult)
+      console.log('build ok')
+      return state;
+    })
   }
   else {
     res.status(200).json({
@@ -95,7 +135,7 @@ async function doAction(req) {
 
 
   if (nextAction) {
-     await doNext(currentStep + 1, state);
+    await doNext(currentStep + 1, state);
   }
   else {
     console.log('finished...')

@@ -1500,10 +1500,10 @@ get-symbol-description@^1.0.0:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.1"
 
-gitee-pages-build@^1.*.*:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gitee-pages-build/-/gitee-pages-build-1.0.0.tgz#a345eff122baa9f85ccc94d43e530aa3202b7d95"
-  integrity sha512-EvmG5wnhy0++fQgaxo3d3GEqzz0tJ3LFi78u7ptArcK6KPhv5ISY2jTK2uC9gqqi3OMCLV69R7UwHo04crckOQ==
+gitee-pages-build@1.*.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gitee-pages-build/-/gitee-pages-build-1.0.1.tgz#a66ce787a35b8e943f863b8a0e0f40d31d662629"
+  integrity sha512-btjb/S6B/ChgIxSWurXnR7M5O2odyZU52qmtFEfRT2gusBBDIQpH01WJjrbSabn5JzF/QJz3m8nvYr0vevXbww==
   dependencies:
     cheerio "^1.0.0-rc.10"
     dotenv "^10.0.0"
