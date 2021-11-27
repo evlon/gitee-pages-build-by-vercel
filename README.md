@@ -1,6 +1,8 @@
 # gitee-pages-build-by-vercel
 update pages by webhook and vercel 
 
+设置Gitee的Webhooks 到Vercel.com 网站后，因为API只能运行10秒，许多任务没有办法正常完成。为了突破限制，技术上采用多次请求来完成任务，8+8+8等， 达到24秒以上。
+
 ## 使用说明
 1. 先注册Vercel.com
 
