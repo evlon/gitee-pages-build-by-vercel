@@ -68,7 +68,7 @@ async function doAction(req){
   let currentStep = parseInt(req.query.step || '1');
   let state = req.query.state;
   //add your code here...
-  console.log('your code here...',new Date())
+  console.log('your code here...',new Date(),state)
   //await sleep(5000);
 
   let action = actions(currentStep);
@@ -78,7 +78,7 @@ async function doAction(req){
 
   let nextAction = actions(currentStep + 1);
 
-  console.log('end code here...',new Date())
+  console.log('end code here...',new Date(), state)
   // do next step action to get more cpu time
 
  
