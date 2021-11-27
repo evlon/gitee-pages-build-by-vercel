@@ -22,7 +22,7 @@ GITEE_GIST_ID=gist_id
 X_GITEE_TOKEN=gitee web hook token
 
 ```
-4. 验证一下， https://your-vercel-domain.vercel.app/api/hello ， 如果返回 
+4. 验证一下， https://your-vercel-domain.vercel.app/api/pagebuild ， 如果返回 
 ` {"msg":"access not allowd."} `  说明程序OK。 
 
 5. 登录Gitee的仓库，配置web hook . 见图2. 其中 “Web hook 密码” == X_GITEE_TOKEN 

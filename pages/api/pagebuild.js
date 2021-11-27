@@ -95,9 +95,7 @@ async function doAction(req) {
 
 
   if (nextAction) {
-    let state = { currentStep: currentStep }
-
-    await doNext(currentStep + 1, state);
+     await doNext(currentStep + 1, state);
   }
   else {
     console.log('finished...')
