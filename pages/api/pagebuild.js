@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   
 
  
-  doAction(req); 
+  await doAction(req); 
   res.status(200).json({step: currentStep, code:0, msg:"ok"}) 
 }
 
@@ -42,5 +42,5 @@ async function doNext(step,state){
   let queryUri = url + '?' + query;
   console.log('doNext ', queryUri, step, state);
   fetch(queryUri)
-  sleep(1000);
+  await sleep(1000);
 }
