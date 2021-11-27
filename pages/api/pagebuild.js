@@ -17,9 +17,10 @@ export default async function handler(req, res) {
 
 async function doAction(req){
   //add your code here...
+  console.log('your code here...',new Date())
   await sleep(5000);
 
-
+  console.log('end code here...',new Date())
   // do next step action to get more cpu time
 
   let currentStep = parseInt(req.query.step || '1');
@@ -41,4 +42,5 @@ async function doNext(step,state){
   let queryUri = url + '?' + query;
   console.log('doNext ', queryUri, step, state);
   fetch(queryUri)
+  sleep(1000);
 }
