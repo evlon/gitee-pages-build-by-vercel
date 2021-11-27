@@ -12,14 +12,14 @@ export default async function handler(req, res) {
   }
   if (process.env.GITEE_USERNAME && process.env.GITEE_PASSWORD && process.env.GITEE_REPO) {
 
-    let repo = req.body.repository.path;
-    let branch = req.body.ref.split('/').pop();
-    if (branch == process.env.GITEE_BRANCH) {
-      res.status(200).json({ msg: 'skip branch ' + branch })
-      return;
-    }
-
     if (req.method == "POST") {
+      let repo = req.body.repository.path;
+      let branch = req.body.ref.split('/').pop();
+      if (branch != process.env.GITEE_BRANCH) {
+        res.status(200).json({ msg: 'skip branch ' + branch })
+        return;
+      }
+
       let giteeTimestamp = req.headers["x-gitee-timestamp"];
       let giteeEvent = req.headers["x-gitee-event"];
 
