@@ -27,7 +27,7 @@ async function doAction(req){
   if(currentStep < 3){
     let state = {currentStep:currentStep}
     
-    doNext(currentStep + 1,  state);
+    await doNext(currentStep + 1,  state);
   }
   else{
     console.log('finished...')
