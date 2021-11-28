@@ -36,3 +36,5 @@ X_GITEE_TOKEN=gitee web hook token
    ![附图1](docs/1.png)
 2. Gitee
    ![附图2](docs/2.png)
+3. Vercel function log
+   ![附图3](docs/3.png)
