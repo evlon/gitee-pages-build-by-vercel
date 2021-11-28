@@ -58,14 +58,40 @@ export default async function handler(req, res) {
       // 设置COOKIE
       await gitee.setCookieStoreJsonObject(state.args.cookie)
 
-      const loginResult = await gitee.login()
-      console.log('login ' + loginResult)
+      const loginStatus = await gitee.isLogin()
+      console.log('login ' , loginStatus)
 
-      state.stacks.push({ msg: 'gitee_login_with_obj_cookie', time: new Date(), result: loginResult });
+      state.args.csrf_token = loginStatus.csrf_token;
+
+      state.stacks.push({ msg: 'islogin', time: new Date(), result: JSON.stringify(loginStatus) });
       return state;
     })
 
     addAction(3, async state => {
+
+      //更新环境变量
+      process.env.GITEE_REPO = state.args.repo;
+      GiteePage.delayFetch = 50;
+
+      let gitee = new GiteePage(process.env.GITEE_USERNAME,
+        process.env.GITEE_PASSWORD,
+        process.env.GITEE_REPO,
+        process.env.GITEE_BRANCH,
+        process.env.GITEE_DIRECTORY,
+        process.env.GITEE_HTTPS)
+
+      // 设置COOKIE
+      await gitee.setCookieStoreJsonObject(state.args.cookie)
+
+      let csrf_token = state.args.csrf_token;
+      const loginResult = await gitee.doLogin(csrf_token)
+      console.log('login ' + loginResult)
+
+      state.stacks.push({ msg: 'doLogin', time: new Date(), result: loginResult });
+      return state;
+    })
+
+    addAction(4, async state => {
       //更新环境变量
       process.env.GITEE_REPO = state.args.repo;
       GiteePage.delayFetch = 50;
@@ -81,12 +107,12 @@ export default async function handler(req, res) {
       await gitee.setCookieStoreJsonObject(state.args.cookie)
 
       let buildResult = await gitee.pageBuild();
-      state.stacks.push({ msg: 'pagebuild_with_obj_cookie', time: new Date(), result: buildResult });
+      state.stacks.push({ msg: 'pageBuild', time: new Date(), result: buildResult });
       console.log('build success.')
       return state;
     })
 
-    addAction(4, async state => {
+    addAction(5, async state => {
       let jsonObject = state.args.cookie;
       const saveResult = await gist.save_obj(process.env.GITEE_GIST_TOKEN, jsonObject, process.env.GITEE_GIST_ID, "json_cookie.mem")
       console.log('sync cookie to gitee gist  ' + saveResult)
