@@ -7,14 +7,21 @@ let gist = buildPage.giteeGistSync
 let actionsmap = {};
 
 export default async function handler(req, res) {
+  if (req.method != "POST") {
+    res.status(200).json({ msg: 'ok' })
+    return;
+  }
+
   let giteeToken = req.headers["x-gitee-token"];
   if (giteeToken != process.env.X_GITEE_TOKEN) {
     res.status(403).json({ msg: 'access not allowd.' })
     return;
   }
-  if (process.env.GITEE_USERNAME && process.env.GITEE_PASSWORD && process.env.GITEE_REPO) {
 
-    if (req.method == "POST") {
+
+  if (process.env.GITEE_USERNAME && process.env.GITEE_PASSWORD && process.env.GITEE_REPO) {
+    //User-Agent: git-oschina-hook // req.headers['user-agent'] == "git-oschina-hook" &&
+    if (!req.query.step) {
       let repo = req.body.repository.path;
       let branch = req.body.ref.split('/').pop();
       if (branch != process.env.GITEE_BRANCH) {
@@ -31,10 +38,9 @@ export default async function handler(req, res) {
         const syncResult = await gist.sync_obj(process.env.GITEE_GIST_TOKEN, process.env.GITEE_GIST_ID, "json_cookie.mem", jsonObject)
         console.log('sync cookie to local ' + syncResult)
 
-        return { args: { cookie: jsonObject, repo, branch }, stacjsonObjectks: [{ msg: 'init api', time: new Date() }] };
+        return { args: { cookie: jsonObject, repo, branch }, stacks: [{ msg: 'init api', time: new Date() }] };
       })
     }
-
 
     addAction(2, async state => {
 
@@ -53,7 +59,7 @@ export default async function handler(req, res) {
       await gitee.setCookieStoreJsonObject(state.args.cookie)
 
       const loginResult = await gitee.login()
-      console.log('login ' + syncResult)
+      console.log('login ' + loginResult)
 
       state.stacks.push({ msg: 'gitee_login_with_obj_cookie', time: new Date(), result: loginResult });
       return state;
@@ -117,10 +123,16 @@ function addAction(step, fn_argState) {
 }
 
 async function doAction(req) {
-  let currentStep = parseInt(req.query.step || '1');
-  let state = JSON.parse(req.query.state || '{}');
+  let currentStep = 1;
+  let state = {};
+
+  if(req.query.step){
+    currentStep = parseInt(req.query.step);
+    state = req.body;
+  }
   //add your code here...
-  console.log('your code here...', new Date(), state)
+
+  console.log('begin action', new Date(), state)
   //await sleep(5000);
 
   let action = actions(currentStep);
@@ -130,7 +142,7 @@ async function doAction(req) {
 
   let nextAction = actions(currentStep + 1);
 
-  console.log('end code here...', new Date(), state)
+  console.log('end action', new Date(), state)
   // do next step action to get more cpu time
 
 
@@ -146,14 +158,17 @@ async function doAction(req) {
 async function doNext(step, state) {
 
   let url = process.env.API_PAGE_BUILD_SELF_URI || 'http://localhost:3000/api/pagebuild';
-  let query = new URLSearchParams({ step: step, state: JSON.stringify(state) }).toString();
+  let query = new URLSearchParams({ step: step }).toString();
   let queryUri = url + '?' + query;
   console.log('doNext ', queryUri, step, state);
   fetch(queryUri, {
-    method: "GET",
+    method: "POST",
     headers: {
+      "Content-Type": "application/json",
       "x-gitee-token": process.env.X_GITEE_TOKEN
-    }
+    },
+    body: JSON.stringify(state)
+
   })
   await sleep(1000);
 }
