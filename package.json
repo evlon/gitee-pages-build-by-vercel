@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node ./buildpage.js",
+    "build": "next build && node ./buildpage.mjs",
     "start": "next start",
     "lint": "next lint"
   },
