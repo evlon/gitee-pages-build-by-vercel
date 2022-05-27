@@ -2,7 +2,6 @@ import buildPage from 'gitee-pages-build';
 import fetch from 'node-fetch'
 import sleep from 'sleep-anywhere'
 import URLSearchParams from 'url-search-params'
-import Github from '../src/github'
 
 let GiteePage = buildPage.GiteePage;
 let gist = buildPage.giteeGistSync
