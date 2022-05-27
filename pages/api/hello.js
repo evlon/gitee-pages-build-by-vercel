@@ -24,7 +24,8 @@ export default async function handler(req, res) {
   }
   else {
     res.status(200).json({
-      msg: `设置环境变量    
+      msg: `设置环境变量
+          
     GITEE_USERNAME=your_name
     GITEE_PASSWORD=your_password
     GITEE_REPO=your_repo
